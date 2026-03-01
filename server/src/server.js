@@ -19,11 +19,11 @@ app.post("/webhook", async (req, res) => {
 
   if (message) {
     const chatId = message.chat.id;
-    const entities = message.entities;
+    const text = message.text;
 
     await axios.post(`${TELEGRAM_API}/sendMessage`, {
       chat_id: chatId,
-      text: `Ты написал: ${entities}`
+      text: `Ты написал: ${text}`
     });
   }
 
