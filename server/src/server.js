@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // 🔹 Обработка webhook от Telegram
 app.post("/webhook", async (req, res) => {
-  console.log(req.body)
+  console.log("Received webhook request:", req.body);
   const message = req.body.message;
 
   if (message) {
