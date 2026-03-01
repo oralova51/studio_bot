@@ -1,13 +1,17 @@
 const express = require("express");
 const axios = require("axios");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+
+const { handleTildaWebhook } = require("./tildaWebHook");
 
 const app = express();
 app.use(express.json());
+app.use(bodyParser.json());
 
 dotenv.config();
 
-const TOKEN = process.env.STUDIO_BOT_API;
+const TOKEN = process.env.STUDIO_BOT_TOKEN;
 console.log("TOKEN:",TOKEN);
 const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
 const PORT = process.env.PORT || 3000;
@@ -29,6 +33,8 @@ app.post("/webhook", async (req, res) => {
 
   res.sendStatus(200);
 });
+
+app.post('/tilda-webhook', handleTildaWebhook);
 
 
 app.listen(PORT, () => {
