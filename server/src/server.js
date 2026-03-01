@@ -2,12 +2,14 @@ const express = require("express");
 const axios = require("axios");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
 
 const { handleTildaWebhook } = require("./tildaWebHook");
 
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(morgan());
 
 dotenv.config();
 
