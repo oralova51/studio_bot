@@ -8,6 +8,7 @@ app.use(express.json());
 dotenv.config();
 
 const TOKEN = process.env.STUDIO_BOT_API;
+console.log("TOKEN:",TOKEN);
 const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
 const PORT = process.env.PORT || 3000;
 
@@ -18,11 +19,11 @@ app.post("/webhook", async (req, res) => {
 
   if (message) {
     const chatId = message.chat.id;
-    const text = message.text;
+    const entities = message.entities;
 
     await axios.post(`${TELEGRAM_API}/sendMessage`, {
       chat_id: chatId,
-      text: `Ты написал: ${text}`
+      text: `Ты написал: ${entities}`
     });
   }
 
