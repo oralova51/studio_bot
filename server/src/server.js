@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(morgan());
+app.use(express.urlencoded({ extended: true }));
 
 dotenv.config();
 

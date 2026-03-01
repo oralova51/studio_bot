@@ -1,33 +1,34 @@
-const fetch = require('node-fetch'); // если Node < 18
+const axios = require('axios');
 
 async function handleTildaWebhook(req, res) {
   try {
     const data = req.body;
+    console.log("Webhook Tilda body:", data);
 
-    // 🔹 Логируем полностью объект, чтобы видеть, что пришло
-    console.log("Webhook Tilda POST data:", data);
-
-    // 🔹 Пример: извлекаем имя и телефон
-    const name = data.name || 'Клиент';
-    const phone = data.phone || 'не указан';
-
-    // 🔹 Отправляем сообщение в Telegram
     const telegramBotToken = process.env.STUDIO_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
-    await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: `Новый клиент: ${name}, тел: ${phone}`
-      })
-    });
+    if (!telegramBotToken || !chatId) {
+      console.error("Нет токена бота или chat_id");
+      return res.status(500).send("Нет токена бота или chat_id");
+    }
 
-    // 🔹 Отвечаем Tilda, что запрос успешно обработан
+    // ✅ Правильный вызов axios.post
+    await axios.post(
+      `https://api.telegram.org/bot${telegramBotToken}/sendMessage`,
+      {
+        chat_id: chatId,
+        text: `📌 Новый клиент: ${JSON.stringify(data)}`
+      },
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+
     res.status(200).send('OK');
   } catch (err) {
-    console.error("Ошибка при обработке webhook Tilda:", err);
+    console.error("Ошибка при обработке webhook Tilda:", err.message);
+    console.error(err.stack);
     res.status(500).send('Error');
   }
 }
