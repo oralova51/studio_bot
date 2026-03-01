@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // 🔹 Обработка webhook от Telegram
 app.post("/webhook", async (req, res) => {
+  console.log(req.body)
   const message = req.body.message;
 
   if (message) {
@@ -26,6 +27,11 @@ app.post("/webhook", async (req, res) => {
   }
 
   res.sendStatus(200);
+});
+
+await axios.post(`${TELEGRAM_API}/sendMessage`, {
+  chat_id: chatId,
+  text: `Ты написал: ${text}`
 });
 
 app.listen(PORT, () => {
