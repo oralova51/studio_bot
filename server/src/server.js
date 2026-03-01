@@ -29,10 +29,6 @@ app.post("/webhook", async (req, res) => {
   res.sendStatus(200);
 });
 
-await axios.post(`${TELEGRAM_API}/sendMessage`, {
-  chat_id: chatId,
-  text: `Ты написал: ${text}`
-});
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
